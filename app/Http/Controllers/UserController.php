@@ -21,7 +21,7 @@ class UserController extends Controller
 
     public function createUserPresence(User $user, Request $request){
         $request->validate([
-            'day'=>'date|nullable'
+            'day'=>'nullable'
         ]);
 
         $day=Carbon::now()->format("Y-m-d");

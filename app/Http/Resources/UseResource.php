@@ -26,13 +26,16 @@ class UseResource extends JsonResource
             }
         }
 
+        //$stats=DailySensorStats::whereIn("sensor_id",$sensors_ids)->orderBy("created_at","desc")->limit(count($sensors_ids))-;
+        //foreach($stats)
+
         return [
             'id'=>$this->id,
             'name'=>$this->name,
             'email'=>$this->email,
             'stations'=>$user->stations,
             'last_10_presences'=>UserPresence::where('user_id',$this->id)->limit(10)->get(),
-            'statistics'=>MetricsResource::collection(DailySensorStats::whereIn("sensor_id",$sensors_ids)->orderBy("created_at","desc")->limit(count($sensors_ids)))
+            'statistics'=>MetricsResource::collection(DailySensorStats::whereIn("sensor_id",$sensors_ids)->orderBy("created_at","desc")->limit(count($sensors_ids))->get())
         ];
     }
 }
