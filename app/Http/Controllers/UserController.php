@@ -19,7 +19,7 @@ class UserController extends Controller
         return response()->json(UseResource::make($user));
     }
 
-    public function setUserPresence(User $user, Request $request){
+    public function createUserPresence(User $user, Request $request){
         $request->validate([
             'day'=>'date|nullable'
         ]);
