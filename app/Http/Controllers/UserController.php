@@ -29,15 +29,23 @@ class UserController extends Controller
             $day=$request->day;
         }
 
-        TimeSlot::all()->each(function($ts) use ($day,$user){
-            UserPresence::create([
-                "time_slot_id"=>$ts->id,
-                "user_id"=>$user->id,
-                "present"=>1,
-                "day"=>$day
-            ]);
-        });
+        if(UserPresence::where('day',$day)->where('user_id',$user->id)->exists()){
+            TimeSlot::all()->each(function($ts) use ($day,$user){
+                UserPresence::create([
+                    "time_slot_id"=>$ts->id,
+                    "user_id"=>$user->id,
+                    "present"=>1,
+                    "day"=>$day
+                ]);
+            });
 
-        return $this->show($user);
+            return $this->show($user);
+        }else{
+            return response()->json([
+                'message'=>'la presenza dell utente è già stata inserita per il giorno indicato: '.$day
+            ],401);
+        }
+
+
     }
 }
