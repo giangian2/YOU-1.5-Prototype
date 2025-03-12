@@ -32,7 +32,7 @@ class UseResource extends JsonResource
             'email'=>$this->email,
             'stations'=>$user->stations,
             'last_10_presences'=>UserPresence::where('user_id',$this->id)->limit(10)->get(),
-            'statistics'=>MetricsResource::collection(DailySensorStats::whereIn("sensor_id",$sensors_ids)->orderBy("created_at","desc")->limit(count($sensors_ids))->get())
+            'statistics'=>MetricsResource::collection(DailySensorStats::whereIn("sensor_id",$sensors_ids)->orderBy("created_at","desc")->limit(count($sensors_ids)))
         ];
     }
 }
