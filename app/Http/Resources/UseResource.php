@@ -18,12 +18,10 @@ class UseResource extends JsonResource
     public function toArray(Request $request): array
     {
         $user=User::findOrFail($this->id);
-        $sensors=[];
         $sensors_ids=[];
 
         foreach ($user->stations as $station) {
             foreach ($station->sensors as $sensor) {
-                array_push($sensors,$sensor);
                 array_push($sensors_ids, $sensor->id);
             }
         }
@@ -33,9 +31,8 @@ class UseResource extends JsonResource
             'name'=>$this->name,
             'email'=>$this->email,
             'stations'=>$user->stations,
-            'sensors'=>$sensors,
             'last_10_presences'=>UserPresence::where('user_id',$this->id)->limit(10)->get(),
-            'statistics'=>DailySensorStats::whereIn("sensor_id",$sensors_ids)->orderBy("created_at","desc")->get()
+            'statistics'=>MetricsResource::collection(DailySensorStats::whereIn("sensor_id",$sensors_ids)->orderBy("created_at","desc")->limit(count($sensors_ids))->get())
         ];
     }
 }
