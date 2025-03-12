@@ -17,12 +17,12 @@ class MetricsResource extends JsonResource
     {
         return [
             'risparmio_complessivo'=>$this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso,
-            'efficienza'=>(($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso)/($this->$this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso+$this->spreco_giornaliero+$this->eccesso_giornaliero))*100,
+            'efficienza'=>(($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso)/($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso+$this->spreco_giornaliero+$this->eccesso_giornaliero))*100,
             'cicli_di_ricarica_risparmiati'=>($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso)*0.01,
             'litri_di_acqua_risparmiati'=>($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso)*0.0005,
             'jackpot_guadagnato'=>($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso)*0.25,
             'spreco_complessivo'=>$this->spreco_giornaliero+$this->eccesso_giornaliero,
-            'inefficienza'=>100-((($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso)/($this->$this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso+$this->spreco_giornaliero+$this->eccesso_giornaliero))*100),
+            'inefficienza'=>100-((($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso)/($this->risparmio_giornaliero_da_spreco+$this->risparmio_giornaliero_da_eccesso+$this->spreco_giornaliero+$this->eccesso_giornaliero))*100),
             'cicli_di_ricarica_sprecati'=>($this->spreco_giornaliero+$this->eccesso_giornaliero)*0.01,
             'litri_di_acqua_sprecati'=>($this->spreco_giornaliero+$this->eccesso_giornaliero)*0.0005,
             'jackpot_spreacto'=>($this->spreco_giornaliero+$this->eccesso_giornaliero)*0.25,
