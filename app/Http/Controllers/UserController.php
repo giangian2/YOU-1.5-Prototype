@@ -29,7 +29,7 @@ class UserController extends Controller
             $day=$request->day;
         }
 
-        if(UserPresence::where('day',$day)->where('user_id',$user->id)->exists()){
+        if(!UserPresence::where('day',$day)->where('user_id',$user->id)->exists()){
             TimeSlot::all()->each(function($ts) use ($day,$user){
                 UserPresence::create([
                     "time_slot_id"=>$ts->id,
