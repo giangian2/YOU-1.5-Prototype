@@ -93,6 +93,12 @@ return [
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        'mongodb' => [
+            'driver' => 'mongodb',
+            // Replace "mongodb://localhost:27017" with the actual connection string
+            'dsn' => env('DB_DSN', 'mongodb+srv://youbackend:120Youbackend,130@you.gypec.mongodb.net/?retryWrites=true&w=majority&appName=you'),
+            'database' => env('DB_DATABASE', 'you'),
+        ],
     ],
 
     /*
@@ -145,6 +151,7 @@ return [
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],
+
 
     ],
 

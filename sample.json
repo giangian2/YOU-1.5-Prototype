@@ -1,0 +1,66 @@
+{
+    "src": "shellyplus1pm-b0b21c0eebf4",
+    "dst": "Renovit/MI-Mali/Piano-04/Uff-01/Acc/FM/events",
+    "method": "NotifyFullStatus",
+    "params": {
+        "ts": 1734081041.75,
+        "ble": {},
+        "cloud": {
+            "connected": true
+        },
+        "input:0": {
+            "id": 0,
+            "state": false
+        },
+        "mqtt": {
+            "connected": true
+        },
+        "switch:0": {
+            "id": 0,
+            "source": "init",
+            "output": true,
+            "apower": 0.9,
+            "voltage": 222.1,
+            "current": 0.029,
+            "aenergy": {
+                "total": 9050.315,
+                "by_minute": [
+                    12.808,
+                    12.366,
+                    12.366
+                ],
+                "minute_ts": 1734081000
+            },
+            "temperature": {
+                "tC": 55.3,
+                "tF": 131.5
+            }
+        },
+        "sys": {
+            "mac": "B0B21C0EEBF4",
+            "restart_required": false,
+            "time": "10:10",
+            "unixtime": 1734081041,
+            "uptime": 1958467,
+            "ram_size": 253640,
+            "ram_free": 136620,
+            "fs_size": 393216,
+            "fs_free": 110592,
+            "cfg_rev": 23,
+            "kvs_rev": 0,
+            "schedule_rev": 0,
+            "webhook_rev": 0,
+            "available_updates": {},
+            "reset_reason": 3
+        },
+        "wifi": {
+            "sta_ip": "172.29.104.22",
+            "status": "got ip",
+            "ssid": "WIFI-SHELLY",
+            "rssi": -64
+        },
+        "ws": {
+            "connected": false
+        }
+    }
+}
