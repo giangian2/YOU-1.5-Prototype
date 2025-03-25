@@ -10,6 +10,7 @@ use App\Models\TimeSlot;
 use App\Models\UserPresence;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class CreateDetection extends Command
 {
@@ -49,40 +50,46 @@ class CreateDetection extends Command
             foreach($sensors as $sensor){
                 $this->info("Sensor Key: ".$sensor->key.", Start Date: ".$startDate);
                 $ordered_events=ShellyEvent::where('shelly_id',$sensor->key)->where('created_at','>=',$startDate)->where('created_at','<=',$endDate)->orderByDesc('created_at')->get();
-                $last_event=$ordered_events[0];
-                $first_event = $ordered_events[count($ordered_events) - 1];
+                if(count($ordered_events)>0){
+                    $last_event=$ordered_events[0];
+                    $first_event = $ordered_events[count($ordered_events) - 1];
 
-                if (UserPresence::where('user_id', '=', $this->user->id)->where('day', '=', date('Y-m-d'))->where('time_slot_id', '=', $this->slot->id)->exists()) {
-                    Detection::create([
-                        'apower1' => $first_event->apower,
-                        'apower2' => $last_event->apower,
-                        'aenergy1' => $first_event->aenergy,
-                        'aenergy2' => $last_event->aenergy,
-                        'sensor_id' => $sensor->id,
-                        'user_presence_id' => UserPresence::where('user_id', '=', $this->user->id)
-                                                        ->where('day', '=', date('Y-m-d'))
-                                                        ->where('time_slot_id', '=', $this->slot->id)
-                                                        ->first()
-                                                        ->id,
-                    ]);
+                    if (UserPresence::where('user_id', '=', $this->user->id)->where('day', '=', date('Y-m-d'))->where('time_slot_id', '=', $this->slot->id)->exists()) {
+                        Detection::create([
+                            'apower1' => $first_event->apower,
+                            'apower2' => $last_event->apower,
+                            'aenergy1' => $first_event->aenergy,
+                            'aenergy2' => $last_event->aenergy,
+                            'sensor_id' => $sensor->id,
+                            'user_presence_id' => UserPresence::where('user_id', '=', $this->user->id)
+                                                            ->where('day', '=', date('Y-m-d'))
+                                                            ->where('time_slot_id', '=', $this->slot->id)
+                                                            ->first()
+                                                            ->id,
+                        ]);
+                    }else{
+                        $new_presence=UserPresence::create([
+                            'time_slot_id'=>$this->slot->id,
+                            'user_id'=>$this->user->id,
+                            'day'=>date('Y-m-d'),
+                            'present'=>true
+                        ]);
+
+                        Detection::create([
+                            'apower1' => $first_event->apower,
+                            'apower2' => $last_event->apower,
+                            'aenergy1' => $first_event->aenergy,
+                            'aenergy2' => $last_event->aenergy,
+                            'sensor_id' => $sensor->id,
+                            'user_presence_id' => $new_presence->id,
+                        ]);
+                    }
+                    ShellyEvent::where('shelly_id',$sensor->key)->where('created_at','>=',$startDate)->where('created_at','<=',$endDate)->delete();
                 }else{
-                    $new_presence=UserPresence::create([
-                        'time_slot_id'=>$this->slot->id,
-                        'user_id'=>$this->user->id,
-                        'day'=>date('Y-m-d'),
-                        'present'=>true
-                    ]);
-
-                    Detection::create([
-                        'apower1' => $first_event->apower,
-                        'apower2' => $last_event->apower,
-                        'aenergy1' => $first_event->aenergy,
-                        'aenergy2' => $last_event->aenergy,
-                        'sensor_id' => $sensor->id,
-                        'user_presence_id' => $new_presence->id,
-                    ]);
+                    Log::error("Non sono state trovate rilevazioni per lo shelly: ".$sensor->key." tra: ".$startDate->toDateTimeString()." e:".$endDate->toDateTimeString());
                 }
-                ShellyEvent::where('shelly_id',$sensor->key)->where('created_at','>=',$startDate)->where('created_at','<=',$endDate)->delete();
+
+
             }
         }
     }
