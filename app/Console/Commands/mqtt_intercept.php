@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use PhpMqtt\Client\MqttClient;
 use PhpMqtt\Client\ConnectionSettings;
 use App\Models\ShellyEvent;
@@ -57,7 +58,7 @@ class mqtt_intercept extends Command
                         'aenergy'=> $json["params"]["switch:0"]["aenergy"]["total"],
                         'topic'=> $topic
                     ]);
-                    echo sprintf("Received message on topic [%s]: %s\n", $topic, $message);
+                    Log::info( sprintf("Received message on topic [%s]: %s\n", $topic, $message));
                 }
             }
 
