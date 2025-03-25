@@ -58,7 +58,7 @@ class mqtt_intercept extends Command
                         'aenergy'=> $json["params"]["switch:0"]["aenergy"]["total"],
                         'topic'=> $topic
                     ]);
-                    Log::info( sprintf("Received message on topic [%s]: %s\n", $topic, $message));
+                    //Log::info( sprintf("Received message on topic [%s]: %s\n", $topic, $message));
                 }
             }
 
