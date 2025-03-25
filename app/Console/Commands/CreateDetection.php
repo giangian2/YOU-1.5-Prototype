@@ -66,6 +66,7 @@ class CreateDetection extends Command
                                                         ->id,
                     ]);
                 }
+                ShellyEvent::where('shelly_id',$sensor->key)->where('created_at','>=',$startDate)->where('created_at','<=',$endDate)->delete();
             }
         }
     }

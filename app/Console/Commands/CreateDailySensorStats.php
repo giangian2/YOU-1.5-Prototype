@@ -19,7 +19,7 @@ class CreateDailySensorStats extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-daily-sensor-stats {--sensorId=}';
+    protected $signature = 'app:create-daily-sensor-stats {sensor}';
 
     /**
      * The console command description.
@@ -33,7 +33,7 @@ class CreateDailySensorStats extends Command
      */
     public function handle()
     {
-        $sensorId=$this->option('sensorId');
+        $sensorId=$this->argument('sensor');
 
         if(!Sensor::where('id',$sensorId)->exists()){
             $this->error('Il sensore non esiste!');
