@@ -65,6 +65,22 @@ class CreateDetection extends Command
                                                         ->first()
                                                         ->id,
                     ]);
+                }else{
+                    $new_presence=UserPresence::create([
+                        'time_slot_id'=>$this->slot->id,
+                        'user_id'=>$this->user->id,
+                        'day'=>date('Y-m-d'),
+                        'present'=>true
+                    ]);
+
+                    Detection::create([
+                        'apower1' => $first_event->apower,
+                        'apower2' => $last_event->apower,
+                        'aenergy1' => $first_event->aenergy,
+                        'aenergy2' => $last_event->aenergy,
+                        'sensor_id' => $sensor->id,
+                        'user_presence_id' => $new_presence->id,
+                    ]);
                 }
                 ShellyEvent::where('shelly_id',$sensor->key)->where('created_at','>=',$startDate)->where('created_at','<=',$endDate)->delete();
             }
